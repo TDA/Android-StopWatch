@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.os.Handler;
 
 public class stopWatchActivity extends Activity {
     /**
@@ -15,7 +16,8 @@ public class stopWatchActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.stopWatchLayout);
+        setContentView(R.layout.activity_stopwatch);
+        runTimer();
     }
 
     public void onClickStart(View view) {
@@ -31,18 +33,24 @@ public class stopWatchActivity extends Activity {
         this.seconds = 0;
     }
 
-    public void runTimer(View view) {
+    private void runTimer() {
         TextView timeView = (TextView) findViewById(R.id.timeView);
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (running) {
+                    seconds++;
+                }
+                int hours = seconds / 3600;
+                int minutes = (seconds % 3600) / 60;
+                int secs = seconds % 60;
+                String time = String.format("%02d:%02d:%02d", hours, minutes, secs);
+                timeView.setText(time);
 
-        int hours = seconds / 3600;
-        int minutes = (seconds % 3600)/ 60;
-        int secs = seconds % 60;
-        String time = String.format("%d:%2d:%2d", hours, minutes, secs);
-        timeView.setText(time);
-
-        if(running) {
-            seconds++;
-        }
+                handler.postDelayed(this, 999);
+            }
+        });
 
     }
 
