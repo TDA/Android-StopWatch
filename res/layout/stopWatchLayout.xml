@@ -7,7 +7,34 @@
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Hello World, stopWatchActivity"
+            android:text=""
+            android:id="@+id/timeView"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@android:dimen/notification_large_icon_height"
+            />
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start"
+            android:id="@+id/start"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onClickStart"
+            />
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stop"
+            android:id="@+id/stop"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onClickStop"
+            />
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reset"
+            android:id="@+id/reset"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onClickReset"
             />
 </LinearLayout>
 
