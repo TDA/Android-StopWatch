@@ -35,20 +35,22 @@ public class stopWatchActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
-        this.wasRunning = this.isRunning;
         this.isRunning = false;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        this.isRunning = this.wasRunning;
+        if (this.wasRunning) {
+            this.isRunning = true;
+        }
     }
+
 
     @Override
     protected void onPause() {
         super.onPause();
-        // same as onStop
+        // same as onStop, but set wasRunning.
         this.wasRunning = this.isRunning;
         this.isRunning = false;
     }
@@ -57,8 +59,11 @@ public class stopWatchActivity extends Activity {
     protected void onResume() {
         super.onResume();
         // same as onStart
-        this.isRunning = this.wasRunning;
+        if (this.wasRunning) {
+            this.isRunning = true;
+        }
     }
+
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt("seconds", this.seconds);
