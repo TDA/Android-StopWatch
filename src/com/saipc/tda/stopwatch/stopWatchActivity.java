@@ -13,37 +13,55 @@ public class stopWatchActivity extends Activity {
      */
     // Private variables
     private int seconds = 0;
-    private boolean running = false;
+    private boolean isRunning = false;
+    private boolean wasRunning = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stopwatch);
         if (savedInstanceState != null) {
             this.seconds = savedInstanceState.getInt("seconds");
-            this.running = savedInstanceState.getBoolean("running");
+            this.isRunning = savedInstanceState.getBoolean("isRunning");
         }
         runTimer();
     }
+
     @Override
     public void onConfigurationChanged(Configuration configuration) {
         // do nothing
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        this.wasRunning = this.isRunning;
+        this.isRunning = false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.isRunning = this.wasRunning;
+    }
+
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt("seconds", this.seconds);
-        savedInstanceState.putBoolean("running", this.running);
+        savedInstanceState.putBoolean("isRunning", this.isRunning);
     }
     public void onClickStart(View view) {
-        this.running = true;
+        this.isRunning = true;
     }
 
     public void onClickStop(View view) {
-        this.running = false;
+        this.isRunning = false;
     }
 
     public void onClickReset(View view) {
-        this.running = false;
+        this.isRunning = false;
         this.seconds = 0;
+        TextView timeView = (TextView) findViewById(R.id.timeView);
+        String time = String.format("%02d:%02d:%02d", 0, 0, 0);
+        timeView.setText(time);
     }
 
     private void runTimer() {
@@ -52,7 +70,7 @@ public class stopWatchActivity extends Activity {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (running) {
+                if (isRunning) {
                     seconds++;
                 }
 
