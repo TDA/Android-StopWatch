@@ -1,6 +1,7 @@
 package com.saipc.tda.stopwatch;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -17,9 +18,21 @@ public class stopWatchActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stopwatch);
+        if (savedInstanceState != null) {
+            this.seconds = savedInstanceState.getInt("seconds");
+            this.running = savedInstanceState.getBoolean("running");
+        }
         runTimer();
     }
+    @Override
+    public void onConfigurationChanged(Configuration configuration) {
+        // do nothing
+    }
 
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt("seconds", this.seconds);
+        savedInstanceState.putBoolean("running", this.running);
+    }
     public void onClickStart(View view) {
         this.running = true;
     }
@@ -42,6 +55,7 @@ public class stopWatchActivity extends Activity {
                 if (running) {
                     seconds++;
                 }
+
                 int hours = seconds / 3600;
                 int minutes = (seconds % 3600) / 60;
                 int secs = seconds % 60;
